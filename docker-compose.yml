@@ -1,12 +1,13 @@
 version: '3'
 services:
+
   redis:
     image: redis:alpine
     container_name: redis
     ports:
       - 6379:6379
     volumes:
-      - redis-data:/data
+      - ./redis_data:/data
     networks:
       - monitor-net
     healthcheck:
@@ -23,7 +24,7 @@ services:
     ports:
       - 5540:5540
     volumes:
-      - redis-insight-data:/data
+      - ./redisinsight_data:/data
     networks:
       - monitor-net
     depends_on:
@@ -45,15 +46,36 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - grafana-storage:/var/lib/grafana
+      - ./grafana_data:/var/lib/grafana
+    networks:
+      - monitor-net
+
+  postgresql:
+      image: postgres:14
+      hostname: postgresql
+      volumes:
+        - ./postgresql_data:/var/lib/postgresql/data
+      environment:
+        POSTGRES_DB: "conduktor"
+        POSTGRES_USER: "conduktor"
+        POSTGRES_PASSWORD: "password"
+        POSTGRES_HOST_AUTH_METHOD: "scram-sha-256"
+      networks:
+        - monitor-net
+
+  conduktor-console:
+    image: conduktor/conduktor-console
+    depends_on:
+      - postgresql
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./conduktor_data:/var/conduktor
+    environment:
+      CDK_DATABASE_URL: "postgresql://conduktor:password@postgresql:5432/conduktor"
     networks:
       - monitor-net
 
 networks:
   monitor-net:
-  
-volumes:
-  grafana-storage:
-  redis-data:
-  redis-insight-data:
   

@@ -416,3 +416,11 @@ FodyWeavers.xsd
 *.msix
 *.msm
 *.msp
+
+#Infrastructure folders
+conduktor_data
+grafana_data
+postgresql_data
+redisinsight_data
+redis_data
+
