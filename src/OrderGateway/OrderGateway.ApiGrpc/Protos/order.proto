@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option csharp_namespace = "OrderGateway.ApiGrpc.Protos";
+
+package ordergateway;
+
+service Orders {
+  // Unary RPC for new orders; for higher throughput use client/server streaming
+  rpc NewOrder(NewOrderRequest) returns (NewOrderResponse);
+}
+
+message NewOrderRequest {
+  string clientOrderId = 1;
+  string instrument = 2;
+  double price = 3;
+  int64 quantity = 4;
+  string side = 5; // "BUY"/"SELL"
+  string strategyId = 6;
+
+  string brokerId = 7;
+  // add metadata as needed
+}
+
+message NewOrderResponse {
+  string gatewayOrderId = 1;
+  string status = 2; // ACCEPTED/REJECTED etc.
+  string reason = 3;
+}
