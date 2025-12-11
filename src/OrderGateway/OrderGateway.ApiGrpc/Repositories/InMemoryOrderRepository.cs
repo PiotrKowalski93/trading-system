@@ -1,35 +1,35 @@
 ﻿using OrderGateway.ApiGrpc.Models;
+using System.Collections.Concurrent;
 
 namespace OrderGateway.ApiGrpc.Repositories
 {
-    public class InMemoryOrderRepository : IOrderRepository
+    public class InMemoryOrderRepository : IInMemoryOrderRepository
     {
+        private readonly ConcurrentDictionary<string, Order> _orders = new();
+
         public void AddOrUpdate(Order order)
         {
+            _orders.AddOrUpdate(order.ClientOrderId, 
+                order, 
+                (key, oldVal) => order);
             throw new NotImplementedException();
         }
 
         public bool Delete(string id)
         {
-            throw new NotImplementedException();
+            if(_orders.TryRemove(id, out Order order)) return true;
+            return false;
         }
 
         public IEnumerable<Order> GetAll()
         {
-            throw new NotImplementedException();
+            return _orders.Values;
         }
 
-        public Order? GetOrder(string id)
+        public Order? GetOrder(string orderId)
         {
-            throw new NotImplementedException();
+            if(_orders.TryGetValue(orderId, out var order)) return order;
+            return null;
         }
-    }
-
-    public interface IOrderRepository
-    {
-        Order? GetOrder(string id);
-        IEnumerable<Order> GetAll();
-        void AddOrUpdate(Order order);
-        bool Delete(string id);
     }
 }

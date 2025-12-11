@@ -1,87 +1,92 @@
 ﻿using OrderGateway.ApiGrpc.Caches;
-using OrderGateway.ApiGrpc.Models;
 using OrderGateway.ApiGrpc.Protos;
-using System.ComponentModel.DataAnnotations;
 
 namespace OrderGateway.ApiGrpc.Validators
 {
     public class NewOrderValidator : INewOrderValidator
     {
         private readonly IInMemoryInstrumentCache _instruments;
+        private readonly IInMemoryBrokerRulesCache _brokerRules;
+
         //private readonly IRiskService _risk;
         //private readonly IOrderBook _orderBook;
 
-        public NewOrderValidator(IInMemoryInstrumentCache instruments)
+        public NewOrderValidator(IInMemoryInstrumentCache instruments, IInMemoryBrokerRulesCache brokerRules)
         {
             _instruments = instruments;
+            _brokerRules = brokerRules;
         }
 
         public NewOrderValidationResult Validate(NewOrderRequest req)
         {
-            // --- BASIC CHECKS ---
+            // --- Basic Checks ---
             if (string.IsNullOrWhiteSpace(req.ClientOrderId))
-                return new NewOrderValidationResult("clientOrderId is required");
+                return Failed("clientOrderId is required");
 
             if (string.IsNullOrWhiteSpace(req.Instrument))
-                return new NewOrderValidationResult("instrument is required");
+                return Failed("instrument is required");
 
             if (req.Quantity <= 0)
-                return new NewOrderValidationResult("quantity must be > 0");
+                return Failed("quantity must be > 0");
 
             if (req.Price < 0)
-                return new NewOrderValidationResult("price must be >= 0");
+                return Failed("price must be >= 0");
 
             if (req.Side != "BUY" && req.Side != "SELL")
-                return new NewOrderValidationResult("side must be BUY or SELL");
+                return Failed("side must be BUY or SELL");
 
-            // --- INSTRUMENT EXISTS ---
+            if (string.IsNullOrWhiteSpace(req.BrokerId))
+                return Failed("brokerId is required");
+
+            // --- Instrument Exists ---
             var inst = _instruments.Get(req.Instrument);
             if (inst == null)
-                return new NewOrderValidationResult($"Unknown instrument: {req.Instrument}");
+                return Failed($"Unknown instrument: {req.Instrument}");
 
-            // --- PRICE BOUNDS ---
+            // --- Price Bounds ---
             if (req.Price < inst.MinPrice || req.Price > inst.MaxPrice)
-                return new NewOrderValidationResult($"Price {req.Price} outside allowed range {inst.MinPrice} - {inst.MaxPrice}");
+                return Failed($"Price {req.Price} outside allowed range {inst.MinPrice} - {inst.MaxPrice}");
 
-            // --- TICK SIZE ---
+            // --- Tick Size ---
             if (!inst.IsValidTick(req.Price))
-                return new NewOrderValidationResult($"Price {req.Price} does not conform to tick size {inst.TickSize}");
+                return Failed($"Price {req.Price} does not conform to tick size {inst.TickSize}");
 
-            // --- QUANTITY BOUNDS ---
+            // --- Qty Bounds ---
             if (req.Quantity < inst.MinQuantity || req.Quantity > inst.MaxQuantity)
-                return new NewOrderValidationResult($"Quantity {req.Quantity} outside allowed range {inst.MinQuantity} - {inst.MaxQuantity}");
+                return Failed($"Quantity {req.Quantity} outside allowed range {inst.MinQuantity} - {inst.MaxQuantity}");
+
+            // BROKER RULES
+            var rules = _brokerRules.Get(req.BrokerId);
+
+            if (rules == null)
+                return Failed($"Unknown broker {req.BrokerId}");
+
+            // --- Allowed Instruments ---
+            if (!rules.AllowedInstruments.Contains(req.Instrument))
+                return Failed($"Instrument {req.Instrument} not allowed for broker {req.BrokerId}");
+
+            // TODO: Add Order Type restrictions
+            //if (req.OrderType == "MARKET" && !rules.AllowMarketOrders)
+            //return Fail("Market orders not allowed for this broker");
+
+            // --- Trading Hours ---
+            var now = DateTime.UtcNow.TimeOfDay;
+            if (now < rules.TradingStart || now > rules.TradingEnd)
+                return Failed($"Order outside allowed trading hours for broker {req.BrokerId}");
+
+            // --- Quantity Limit ---
+            if (req.Quantity > rules.MaxQuantity)
+                return Failed("Quantity exceeds broker max quantity");
 
             // TODO: Add validation with OrderBook
 
-            return new NewOrderValidationResult();
+            return Passed();
         }
-    }
 
-    public interface INewOrderValidator
-    {
-        NewOrderValidationResult Validate(NewOrderRequest order);
-    }
+        private NewOrderValidationResult Failed(string reason) 
+            => new NewOrderValidationResult(reason);
 
-    public class NewOrderValidationResult
-    {
-        public bool Success { get; }
-        public bool Failure { get; }
-        public string FailedMessage { get; }
-
-        public NewOrderValidationResult(string FailedMessage = "")
-        {
-            this.FailedMessage = FailedMessage;
-
-            if(FailedMessage != "")
-            {
-                Success = false;
-                Failure = true;
-            }
-            else
-            {
-                Success = true;
-                Failure = false;
-            }
-        }
+        private NewOrderValidationResult Passed()
+            => new NewOrderValidationResult();
     }
 }

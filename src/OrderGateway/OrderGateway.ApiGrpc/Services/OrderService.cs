@@ -7,10 +7,10 @@ namespace OrderGateway.ApiGrpc.Services
 {
     public class OrderService : Orders.OrdersBase
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IInMemoryOrderRepository _orderRepository;
         private readonly INewOrderValidator _orderValidator;
 
-        public OrderService(IOrderRepository orderRepository, INewOrderValidator orderValidator)
+        public OrderService(IInMemoryOrderRepository orderRepository, INewOrderValidator orderValidator)
         {
             _orderRepository = orderRepository;
             _orderValidator = orderValidator;
@@ -20,7 +20,6 @@ namespace OrderGateway.ApiGrpc.Services
         {
             // Validate Order
             var validationResult = _orderValidator.Validate(request);
-
             if (validationResult.Failure)
             {
                 return Task.FromResult(new NewOrderResponse
@@ -32,8 +31,16 @@ namespace OrderGateway.ApiGrpc.Services
             }
 
             // Save order in in-memory store + XADD to redis
+            // ...
+            _orderRepository.AddOrUpdate
 
-            return base.NewOrder(request, context);
+            return Task.FromResult(new NewOrderResponse
+            {
+                GatewayOrderId = request.ClientOrderId,
+                Status = "Accepted"
+            });
+
+            //return base.NewOrder(request, context);
         }
     }
 }

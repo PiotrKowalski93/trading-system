@@ -1,6 +1,3 @@
-//using OrderGateway.ApiGrpc.Services;
-
-using Google.Protobuf.WellKnownTypes;
 using OrderGateway.ApiGrpc.Caches;
 using OrderGateway.ApiGrpc.Repositories;
 using OrderGateway.ApiGrpc.Services;
@@ -11,16 +8,16 @@ namespace OrderGateway.ApiGrpc
     public class Program
     {
         private static WebApplication? _application;
-
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             builder.Services.AddGrpc();
-            builder.Services.AddSingleton<IOrderRepository, InMemoryOrderRepository>();
+            builder.Services.AddSingleton<IInMemoryOrderRepository, InMemoryOrderRepository>();
             builder.Services.AddSingleton<INewOrderValidator, NewOrderValidator>();
             builder.Services.AddSingleton<IInMemoryInstrumentCache, InMemoryInstrumentCache>();
+            builder.Services.AddSingleton<IInMemoryBrokerRulesCache, InMemoryBrokerRulesCache>();
 
             _application = builder.Build();
 
@@ -57,6 +54,11 @@ namespace OrderGateway.ApiGrpc
                 1_000_000,
                 0.05 // 5%
             ));
+        }
+
+        private static void LoadBrokerRules()
+        {
+
         }
     }
 }
