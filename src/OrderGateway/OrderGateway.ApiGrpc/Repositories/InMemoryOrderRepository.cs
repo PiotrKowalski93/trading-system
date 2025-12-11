@@ -17,7 +17,7 @@ namespace OrderGateway.ApiGrpc.Repositories
 
         public bool Delete(string id)
         {
-            if(_orders.TryRemove(id, out Order order)) return true;
+            if (_orders.TryRemove(id, out _)) return true;
             return false;
         }
 

@@ -6,12 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>44733365-e51a-4bd1-b879-0ace187747fe</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\order.proto" GrpcServices="Server" />
 
     <PackageReference Include="Grpc.AspNetCore" Version="2.64.0" />
+
+    <PackageReference Include="Microsoft.AspNetCore.Grpc.Swagger" Version="0.9.11" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.22.1" />
   </ItemGroup>
 

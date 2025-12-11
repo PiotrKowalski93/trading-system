@@ -1,4 +1,5 @@
 ﻿using Grpc.Core;
+using OrderGateway.ApiGrpc.Models;
 using OrderGateway.ApiGrpc.Protos;
 using OrderGateway.ApiGrpc.Repositories;
 using OrderGateway.ApiGrpc.Validators;
@@ -32,7 +33,13 @@ namespace OrderGateway.ApiGrpc.Services
 
             // Save order in in-memory store + XADD to redis
             // ...
-            _orderRepository.AddOrUpdate
+            //_orderRepository.AddOrUpdate(new Order(request.ClientOrderId,
+            //    request.Instrument,
+            //    request.Price,
+            //    request.Quantity,
+            //    request.Side,
+            //    request.StrategyId,
+            //    request.BrokerId));
 
             return Task.FromResult(new NewOrderResponse
             {
