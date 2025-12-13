@@ -1,9 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
-using OrderGateway.ApiGrpc.Broker;
-using OrderGateway.ApiGrpc.Caches;
+﻿using OrderGateway.ApiGrpc.Caches;
 using OrderGateway.ApiGrpc.Repositories;
 using OrderGateway.ApiGrpc.Services;
 using OrderGateway.ApiGrpc.Validators;
+using OrderGateway.Core.Broker;
 
 namespace OrderGateway.ApiGrpc
 {

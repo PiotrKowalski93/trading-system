@@ -1,4 +1,4 @@
-﻿namespace OrderGateway.ApiGrpc.Broker
+﻿namespace OrderGateway.Core.Broker
 {
     public class BrokerRules
     {
