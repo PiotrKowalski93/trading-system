@@ -1,4 +1,6 @@
-﻿using OrderGateway.ApiGrpc.Caches;
+﻿using Microsoft.Extensions.Hosting;
+using OrderGateway.ApiGrpc.Caches;
+using OrderGateway.ApiGrpc.Redis;
 using OrderGateway.ApiGrpc.Repositories;
 using OrderGateway.ApiGrpc.Services;
 using OrderGateway.ApiGrpc.Validators;
@@ -24,6 +26,8 @@ namespace OrderGateway.ApiGrpc
             builder.Services.AddSingleton<IInMemoryInstrumentCache, InMemoryInstrumentCache>();
             builder.Services.AddSingleton<IInMemoryBrokerRulesCache, InMemoryBrokerRulesCache>();
             builder.Services.AddSingleton<IStartupCacheLoader, StartupCacheLoader>();
+
+            builder.Services.AddHostedService<RedisConfigSubscriber>();
 
             _application = builder.Build();
 

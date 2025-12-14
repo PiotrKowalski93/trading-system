@@ -2,16 +2,21 @@
 {
     public class InstrumentMetadata
     {
-        public string Symbol { get; }
-        public double TickSize { get; }
-        public double MinPrice { get; }
-        public double MaxPrice { get; }
-        public long MinQuantity { get; }
-        public long MaxQuantity { get; }
+        public string Symbol { get; set; }
+        public double TickSize { get; set; }
+        public double MinPrice { get; set; }
+        public double MaxPrice { get; set; }
+        public long MinQuantity { get; set; }
+        public long MaxQuantity { get; set; }
 
         // Fat-finger check
-        public double MaxDeviationPercent { get; init; }
+        public double MaxDeviationPercent { get; set; }
 
+        public InstrumentMetadata()
+        {
+                
+        }
+        
         public InstrumentMetadata(
             string symbol,
             double tickSize,

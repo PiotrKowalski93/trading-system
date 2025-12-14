@@ -2,15 +2,20 @@
 {
     public class BrokerRules
     {
-        public string BrokerId { get; }
+        public string BrokerId { get; set; }
 
-        public HashSet<string> AllowedInstruments { get; } = new();
-        public bool AllowMarketOrders { get; }
+        public HashSet<string> AllowedInstruments { get; set; }
+        public bool AllowMarketOrders { get; set; }
 
-        public long MaxQuantity { get; }
+        public long MaxQuantity { get; set; }
 
-        public TimeSpan TradingStart { get; } = TimeSpan.FromHours(8);
-        public TimeSpan TradingEnd { get; } = TimeSpan.FromHours(22);
+        public TimeSpan TradingStart { get; set; }
+        public TimeSpan TradingEnd { get; set; }
+
+        public BrokerRules()
+        {
+            
+        }
 
         public BrokerRules(string brokerId,
             HashSet<string> allowedInstruments,

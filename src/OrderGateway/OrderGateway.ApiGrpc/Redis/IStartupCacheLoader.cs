@@ -1,4 +1,4 @@
-﻿namespace OrderGateway.ApiGrpc.Caches
+﻿namespace OrderGateway.ApiGrpc.Redis
 {
     public interface IStartupCacheLoader
     {
