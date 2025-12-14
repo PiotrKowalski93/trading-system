@@ -1,4 +1,4 @@
-﻿namespace OrderGateway.ApiGrpc.Caches
+﻿namespace OrderGateway.Core.Instruments
 {
     public class InstrumentMetadata
     {
@@ -13,12 +13,12 @@
         public double MaxDeviationPercent { get; init; }
 
         public InstrumentMetadata(
-            string symbol, 
-            double tickSize, 
-            double minPrice, 
-            double maxPrice, 
-            long minQty, 
-            long maxQty, 
+            string symbol,
+            double tickSize,
+            double minPrice,
+            double maxPrice,
+            long minQty,
+            long maxQty,
             double maxDevPercent)
         {
             Symbol = symbol;

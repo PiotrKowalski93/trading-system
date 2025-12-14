@@ -1,4 +1,4 @@
-﻿using OrderGateway.ApiGrpc.Broker;
+﻿using OrderGateway.Core.Broker;
 using System.Collections.Concurrent;
 
 namespace OrderGateway.ApiGrpc.Caches

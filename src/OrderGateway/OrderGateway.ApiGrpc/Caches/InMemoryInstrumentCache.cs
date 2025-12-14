@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using OrderGateway.Core.Instruments;
+using System.Collections.Concurrent;
 
 namespace OrderGateway.ApiGrpc.Caches
 {

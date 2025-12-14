@@ -1,4 +1,6 @@
-﻿namespace OrderGateway.ApiGrpc.Caches
+﻿using OrderGateway.Core.Instruments;
+
+namespace OrderGateway.ApiGrpc.Caches
 {
     public interface IInMemoryInstrumentCache
     {

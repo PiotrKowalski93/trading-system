@@ -20,6 +20,7 @@ namespace OrderGateway.ApiRest
                 ConnectionMultiplexer.Connect("localhost:6379")
             );
             builder.Services.AddSingleton<IBrokerRulesRedisWriter, BrokerRulesRedisWriter>();
+            builder.Services.AddSingleton<IInstrumentMetadataRedisWriter, InstrumentMetadataRedisWriter>();
 
             var app = builder.Build();
 
