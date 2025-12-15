@@ -1,4 +1,7 @@
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OrderGateway.ApiRest.Redis;
+using Prometheus;
 using StackExchange.Redis;
 
 namespace OrderGateway.ApiRest
@@ -8,6 +11,21 @@ namespace OrderGateway.ApiRest
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            //builder.Services.AddOpenTelemetry()
+            //    .WithMetrics(opt =>
+            //        opt
+            //            .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService(""))
+            //            .AddMeter("")
+            //            .AddAspNetCoreInstrumentation()
+            //            .AddRuntimeInstrumentation()
+            //            .AddProcessInstrumentation()
+            //            .AddOtlpExporter(opt =>
+            //            {
+            //                //TODO: Move to config .json
+            //                opt.Endpoint = new Uri("localhost:9090");
+            //            })
+            //        );
 
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();
@@ -34,6 +52,9 @@ namespace OrderGateway.ApiRest
                     options.RoutePrefix = string.Empty;
                 });
             }
+
+            app.UseHttpMetrics();     // metryki HTTP (latency, statusy, RPS)
+            app.MapMetrics("/metrics"); // endpoint /metrics
 
             app.UseAuthorization();
             app.MapControllers();

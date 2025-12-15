@@ -49,6 +49,8 @@ services:
       - ./grafana_data:/var/lib/grafana
     networks:
       - infra-network
+    depends_on:
+      - prometheus
 
   postgresql:
     image: postgres:14

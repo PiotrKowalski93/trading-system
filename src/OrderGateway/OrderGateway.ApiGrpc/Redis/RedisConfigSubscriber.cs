@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using OrderGateway.ApiGrpc.Caches;
+﻿using OrderGateway.ApiGrpc.Caches;
 using OrderGateway.Core.Broker;
 using OrderGateway.Core.Instruments;
 using StackExchange.Redis;

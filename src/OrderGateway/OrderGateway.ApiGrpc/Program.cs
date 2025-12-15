@@ -1,9 +1,10 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Microsoft.AspNetCore.Server.Kestrel.Core;
 using OrderGateway.ApiGrpc.Caches;
 using OrderGateway.ApiGrpc.Redis;
 using OrderGateway.ApiGrpc.Repositories;
 using OrderGateway.ApiGrpc.Services;
 using OrderGateway.ApiGrpc.Validators;
+using Prometheus;
 using StackExchange.Redis;
 
 namespace OrderGateway.ApiGrpc
@@ -29,6 +30,21 @@ namespace OrderGateway.ApiGrpc
 
             builder.Services.AddHostedService<RedisConfigSubscriber>();
 
+            builder.WebHost.ConfigureKestrel(options =>
+            {
+                // REST + /metrics
+                options.ListenAnyIP(5100, o =>
+                {
+                    o.Protocols = HttpProtocols.Http1;
+                });
+
+                // gRPC
+                options.ListenAnyIP(5101, o =>
+                {
+                    o.Protocols = HttpProtocols.Http2;
+                });
+            });
+
             _application = builder.Build();
 
             // Load Cache on startup
@@ -36,7 +52,12 @@ namespace OrderGateway.ApiGrpc
 
             // Configure the HTTP request pipeline.
             _application.MapGrpcService<OrderService>();
-            //_application.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
+            // Metrics
+            _application.UseHttpMetrics();
+            _application.UseGrpcMetrics();
+            _application.MapMetrics("/metrics");
+            
             _application.Run();
         }
 
