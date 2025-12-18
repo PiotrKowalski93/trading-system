@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "adb44cc5-a84a-4c24-926c-a9f305db794e",
+		"name": "Instruments Metadata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25161487"
+	},
+	"item": [
+		{
+			"name": "Add AAPL",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"symbol\": \"AAPL\",\r\n  \"tickSize\": 0.01,\r\n  \"minPrice\": 1,\r\n  \"maxPrice\": 1000,\r\n  \"minQuantity\": 1,\r\n  \"maxQuantity\": 1000000,\r\n  \"maxDeviationPercent\": 0.05\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/instruments",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"instruments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add TSLA",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"symbol\": \"TSLA\",\r\n  \"tickSize\": 0.01,\r\n  \"minPrice\": 1,\r\n  \"maxPrice\": 1000,\r\n  \"minQuantity\": 1,\r\n  \"maxQuantity\": 1000000,\r\n  \"maxDeviationPercent\": 0.05\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/instruments",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"instruments"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

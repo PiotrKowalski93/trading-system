@@ -1,0 +1,135 @@
+{
+	"info": {
+		"_postman_id": "2d056cae-9010-4bde-8267-e7187ef6d738",
+		"name": "Broker Rules",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25161487"
+	},
+	"item": [
+		{
+			"name": "localhost:5011/api/brokerRules/BRK-001",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"allowedInstruments\": [\"AAPL\", \"MSFT\", \"GOOG\"],\r\n  \"allowMarketOrders\": true,\r\n  \"maxQuantity\": 10000,\r\n  \"tradingStart\": \"09:00:00\",\r\n  \"tradingEnd\": \"21:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/brokerRules/BRK-001",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"brokerRules",
+						"BRK-001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5011/api/brokerRules/BRK-002",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"allowedInstruments\": [\"BTC-USD\", \"ETH-USD\", \"AAPL\"],\r\n  \"allowMarketOrders\": false,\r\n  \"maxQuantity\": 5,\r\n  \"tradingStart\": \"00:00:00\",\r\n  \"tradingEnd\": \"00:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/brokerRules/BRK-002",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"brokerRules",
+						"BRK-002"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5011/api/brokerRules/BRK-003",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"allowedInstruments\": [\"EURUSD\", \"USDJPY\", \"GBPUSD\"],\r\n  \"allowMarketOrders\": true,\r\n  \"maxQuantity\": 1000000,\r\n  \"tradingStart\": \"07:00:00\",\r\n  \"tradingEnd\": \"17:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/brokerRules/BRK-003",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"brokerRules",
+						"BRK-003"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:5011/api/brokerRules/BRK-004",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"allowedInstruments\": [\"TSLA\"],\r\n  \"allowMarketOrders\": false,\r\n  \"maxQuantity\": 100,\r\n  \"tradingStart\": \"08:00:00\",\r\n  \"tradingEnd\": \"22:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5011/api/brokerRules/BRK-004",
+					"host": [
+						"localhost"
+					],
+					"port": "5011",
+					"path": [
+						"api",
+						"brokerRules",
+						"BRK-004"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
