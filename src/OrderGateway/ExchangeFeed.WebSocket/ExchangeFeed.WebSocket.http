@@ -1,0 +1,6 @@
+@ExchangeFeed.WebSocket_HostAddress = http://localhost:5062
+
+GET {{ExchangeFeed.WebSocket_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

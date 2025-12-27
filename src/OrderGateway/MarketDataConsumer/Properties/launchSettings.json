@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MarketDataConsumer": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}
